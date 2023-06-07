@@ -22,6 +22,126 @@ def add_group(archive, processed_countries, country_name):
                 processed_countries[country_name]['group'] = new_row_values[group_index]
 
 
+def calculate_ranks(lines, processed_countries):
+    playoff_teams = []
+    final_teams = []
+    for line in lines[0:2]:
+        new_row_values = line.strip().split(',')
+        first_country_name = new_row_values[3]
+        second_country_name = new_row_values[4]
+        goals = goal_extractor(new_row_values[7])
+        if new_row_values[3] == first_country_name:
+            if goals[0] > goals[1]:
+                final_teams.append(first_country_name)
+                playoff_teams.append(second_country_name)
+            elif goals[1] > goals[0]:
+                final_teams.append(second_country_name)
+                playoff_teams.append(first_country_name)
+            else:
+                if home_penal > away_penal:
+                    final_teams.append(first_country_name)
+                    playoff_teams.append(second_country_name)
+                else:
+                    final_teams.append(second_country_name)
+                    playoff_teams.append(first_country_name)
+        if new_row_values[4] == first_country_name:
+            if goals[1] > goals[0]:
+                final_teams.append(first_country_name)
+                playoff_teams.append(second_country_name)
+            elif goals[0] > goals[1]:
+                final_teams.append(second_country_name)
+                playoff_teams.append(first_country_name)
+            else:
+                if away_penal > home_penal:
+                    final_teams.append(first_country_name)
+                    playoff_teams.append(second_country_name)
+                else:
+                    final_teams.append(second_country_name)
+                    playoff_teams.append(first_country_name)
+
+    for line in lines:
+        if playoff_teams[0] in line and playoff_teams[1] in line:
+            new_row_values = line.strip().split(',')
+            goals = goal_extractor(new_row_values[7])
+            if playoff_teams[0] == new_row_values[3]:
+                if goals[0] > goals[1]:
+                    processed_countries[playoff_teams[0]]['rank'] = 3
+                    processed_countries[playoff_teams[1]]['rank'] = 4
+                elif goals[1] > goals[0]:
+                    processed_countries[playoff_teams[0]]['rank'] = 4
+                    processed_countries[playoff_teams[1]]['rank'] = 3
+                else:
+                    if home_penal > away_penal:
+                        processed_countries[playoff_teams[0]
+                                            ]['rank'] = 3
+                        processed_countries[playoff_teams[1]
+                                            ]['rank'] = 4
+                    else:
+                        processed_countries[playoff_teams[0]
+                                            ]['rank'] = 4
+                        processed_countries[playoff_teams[1]
+                                            ]['rank'] = 3
+            if playoff_teams[0] == new_row_values[4]:
+                if goals[1] > goals[0]:
+                    processed_countries[playoff_teams[0]]['rank'] = 3
+                    processed_countries[playoff_teams[1]]['rank'] = 4
+                elif goals[0] > goals[1]:
+                    processed_countries[playoff_teams[0]]['rank'] = 4
+                    processed_countries[playoff_teams[1]]['rank'] = 3
+                else:
+                    if away_penal > home_penal:
+                        processed_countries[playoff_teams[0]
+                                            ]['rank'] = 3
+                        processed_countries[playoff_teams[1]
+                                            ]['rank'] = 4
+                    else:
+                        processed_countries[playoff_teams[0]
+                                            ]['rank'] = 4
+                        processed_countries[playoff_teams[1]
+                                            ]['rank'] = 3
+
+    for line in lines:
+        if final_teams[0] in line and final_teams[1] in line:
+            new_row_values = line.strip().split(',')
+            goals = goal_extractor(new_row_values[7])
+            if final_teams[0] == new_row_values[3]:
+                if goals[0] > goals[1]:
+                    processed_countries[final_teams[0]]['rank'] = 1
+                    processed_countries[final_teams[1]]['rank'] = 2
+                elif goals[1] > goals[0]:
+                    processed_countries[final_teams[0]]['rank'] = 2
+                    processed_countries[final_teams[1]]['rank'] = 1
+                else:
+                    if home_penal > away_penal:
+                        processed_countries[final_teams[0]
+                                            ]['rank'] = 1
+                        processed_countries[final_teams[1]
+                                            ]['rank'] = 2
+                    else:
+                        processed_countries[final_teams[0]
+                                            ]['rank'] = 2
+                        processed_countries[final_teams[1]
+                                            ]['rank'] = 1
+            if final_teams[0] == new_row_values[4]:
+                if goals[1] > goals[0]:
+                    processed_countries[final_teams[0]]['rank'] = 1
+                    processed_countries[final_teams[1]]['rank'] = 2
+                elif goals[0] > goals[1]:
+                    processed_countries[final_teams[0]]['rank'] = 2
+                    processed_countries[final_teams[1]]['rank'] = 1
+                else:
+                    if away_penal > home_penal:
+                        processed_countries[final_teams[0]
+                                            ]['rank'] = 1
+                        processed_countries[final_teams[1]
+                                            ]['rank'] = 2
+                    else:
+                        processed_countries[final_teams[0]
+                                            ]['rank'] = 2
+                        processed_countries[final_teams[1]
+                                            ]['rank'] = 1
+
+
 def create_dictionary(archive):
     with open(archive, 'r', encoding='utf-8') as data:
         lines = data.readlines()
@@ -169,8 +289,10 @@ def create_dictionary(archive):
                                 if line_counter == 3:
                                     stats_processed['points'][line_counter] += (
                                         stats_processed['points'][line_counter - 1] + 0)
+
             processed_countries[country_name] = stats_processed
             add_group('group_stats.csv', processed_countries, country_name)
+        calculate_ranks(lines[61:], processed_countries)
         return processed_countries
 
 
