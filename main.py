@@ -11,6 +11,17 @@ def goal_extractor(string):
         return [int(home_goles), int((away_goles))]
 
 
+def add_group(archive, processed_countries, country_name):
+    with open(archive, 'r', encoding='utf-8') as data:
+        lines = data.readlines()
+        column_names = lines[0].strip().split(',')
+        group_index = column_names.index('group')
+        for line in lines:
+            new_row_values = line.strip().split(',')
+            if country_name in line:
+                processed_countries[country_name]['group'] = new_row_values[group_index]
+
+
 def create_dictionary(archive):
     with open(archive, 'r', encoding='utf-8') as data:
         lines = data.readlines()
@@ -159,6 +170,7 @@ def create_dictionary(archive):
                                     stats_processed['points'][line_counter] += (
                                         stats_processed['points'][line_counter - 1] + 0)
             processed_countries[country_name] = stats_processed
+            add_group('group_stats.csv', processed_countries, country_name)
         return processed_countries
 
 
