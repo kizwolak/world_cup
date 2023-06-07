@@ -142,6 +142,16 @@ def calculate_ranks(lines, processed_countries):
                                             ]['rank'] = 1
 
 
+def create_goal_ranking(dictionary):
+    country_list = []
+    goal_list = []
+    for key in dictionary:
+        country_list.append(key)
+        goal_list.append(dictionary[key]['goals'])
+    combined_list = sorted(zip(country_list, goal_list))
+    return combined_list
+
+
 def create_dictionary(archive):
     with open(archive, 'r', encoding='utf-8') as data:
         lines = data.readlines()
@@ -293,7 +303,9 @@ def create_dictionary(archive):
             processed_countries[country_name] = stats_processed
             add_group('group_stats.csv', processed_countries, country_name)
         calculate_ranks(lines[61:], processed_countries)
+        print(create_goal_ranking(processed_countries))
         return processed_countries
 
 
-print(create_dictionary('data.csv'))
+create_dictionary('data.csv')
+# print(create_dictionary('data.csv'))
