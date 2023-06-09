@@ -197,93 +197,45 @@ def create_dictionary(archive):
                         else:
                             if new_row_values[3] == country_name:
                                 if goals['home_goles'] > goals['away_goles']:
-                                    if line_counter == 1:
-                                        stats_processed['points'][line_counter - 1] += 3
-                                    if line_counter == 2:
-                                        stats_processed['points'][line_counter - 1] += 3
-                                    if line_counter == 3:
-                                        stats_processed['points'][line_counter - 1] += 3
+                                    stats_processed['points'][line_counter] += (
+                                        stats_processed['points'][line_counter - 1] + 3)
                                 if goals['home_goles'] == goals['away_goles']:
-                                    if line_counter == 1:
-                                        stats_processed['points'][line_counter - 1] += 1
-                                    if line_counter == 2:
-                                        stats_processed['points'][line_counter - 1] += 1
-                                    if line_counter == 3:
-                                        stats_processed['points'][line_counter - 1] += 1
+                                    stats_processed['points'][line_counter] += (
+                                        stats_processed['points'][line_counter - 1] + 1)
                                 if goals['home_goles'] < goals['away_goles']:
-                                    if line_counter == 1:
-                                        stats_processed['points'][line_counter - 1] += 0
-                                    if line_counter == 2:
-                                        stats_processed['points'][line_counter - 1] += 0
-                                    if line_counter == 3:
-                                        stats_processed['points'][line_counter - 1] += 0
+                                    stats_processed['points'][line_counter] += (
+                                        stats_processed['points'][line_counter - 1] + 0)
                             elif new_row_values[4] == country_name:
-                                if goals['away_goles'] > goals['home_goles']:
-                                    if line_counter == 1:
-                                        stats_processed['points'][line_counter - 1] += 3
-                                    if line_counter == 2:
-                                        stats_processed['points'][line_counter - 1] += 3
-                                    if line_counter == 3:
-                                        stats_processed['points'][line_counter - 1] += 3
-                                if goals['away_goles'] == goals['home_goles']:
-                                    if line_counter == 1:
-                                        stats_processed['points'][line_counter - 1] += 1
-                                    if line_counter == 2:
-                                        stats_processed['points'][line_counter - 1] += 3
-                                    if line_counter == 3:
-                                        stats_processed['points'][line_counter - 1] += 3
-                                if goals['away_goles'] < goals['home_goles']:
-                                    if line_counter == 1:
-                                        stats_processed['points'][line_counter - 1] += 0
-                                    if line_counter == 2:
-                                        stats_processed['points'][line_counter - 1] += 0
-                                    if line_counter == 3:
-                                        stats_processed['points'][line_counter - 1] += 0
+                                if goals['home_goles'] > goals['away_goles']:
+                                    stats_processed['points'][line_counter] += (
+                                        stats_processed['points'][line_counter - 1] + 3)
+                                if goals['home_goles'] == goals['away_goles']:
+                                    stats_processed['points'][line_counter] += (
+                                        stats_processed['points'][line_counter - 1] + 1)
+                                if goals['home_goles'] < goals['away_goles']:
+                                    stats_processed['points'][line_counter] += (
+                                        stats_processed['points'][line_counter - 1] + 0)
                     else:
                         if new_row_values[3] == country_name:
                             if goals['home_goles'] > goals['away_goles']:
-                                if line_counter == 1:
-                                    stats_processed['points'][line_counter - 1] += 3
-                                if line_counter == 2:
-                                    stats_processed['points'][line_counter - 1] += 3
-                                if line_counter == 3:
-                                    stats_processed['points'][line_counter - 1] += 3
+                                stats_processed['points'][line_counter] += (
+                                    stats_processed['points'][line_counter - 1] + 3)
                             if goals['home_goles'] == goals['away_goles']:
-                                if line_counter == 1:
-                                    stats_processed['points'][line_counter - 1] += 1
-                                if line_counter == 2:
-                                    stats_processed['points'][line_counter - 1] += 1
-                                if line_counter == 3:
-                                    stats_processed['points'][line_counter - 1] += 1
+                                stats_processed['points'][line_counter] += (
+                                    stats_processed['points'][line_counter - 1] + 1)
                             if goals['home_goles'] < goals['away_goles']:
-                                if line_counter == 1:
-                                    stats_processed['points'][line_counter - 1] += 0
-                                if line_counter == 2:
-                                    stats_processed['points'][line_counter - 1] += 0
-                                if line_counter == 3:
-                                    stats_processed['points'][line_counter - 1] += 0
+                                stats_processed['points'][line_counter] += (
+                                    stats_processed['points'][line_counter - 1] + 0)
                         elif new_row_values[4] == country_name:
-                            if goals['away_goles'] > goals['home_goles']:
-                                if line_counter == 1:
-                                    stats_processed['points'][line_counter - 1] += 3
-                                if line_counter == 2:
-                                    stats_processed['points'][line_counter - 1] += 3
-                                if line_counter == 3:
-                                    stats_processed['points'][line_counter - 1] += 3
-                            if goals['away_goles'] == goals['home_goles']:
-                                if line_counter == 1:
-                                    stats_processed['points'][line_counter - 1] += 1
-                                if line_counter == 2:
-                                    stats_processed['points'][line_counter - 1] += 1
-                                if line_counter == 3:
-                                    stats_processed['points'][line_counter - 1] += 1
-                            if goals['away_goles'] > goals['home_goles']:
-                                if line_counter == 1:
-                                    stats_processed['points'][line_counter - 1] += 0
-                                if line_counter == 2:
-                                    stats_processed['points'][line_counter - 1] += 0
-                                if line_counter == 3:
-                                    stats_processed['points'][line_counter - 1] += 0
+                            if goals['home_goles'] > goals['away_goles']:
+                                stats_processed['points'][line_counter] += (
+                                    stats_processed['points'][line_counter - 1] + 3)
+                            if goals['home_goles'] == goals['away_goles']:
+                                stats_processed['points'][line_counter] += (
+                                    stats_processed['points'][line_counter - 1] + 1)
+                            if goals['home_goles'] < goals['away_goles']:
+                                stats_processed['points'][line_counter] += (
+                                    stats_processed['points'][line_counter - 1] + 0)
 
             processed_countries[country_name] = stats_processed
             add_group('group_stats.csv', processed_countries, country_name)
@@ -320,6 +272,6 @@ def group_graph(ranking, group):
 
 dictionary = create_dictionary('test_data.csv')
 # print(dictionary[2])
-# group_graph(dictionary[2], 1)
+group_graph(dictionary[2], 1)
 # goals_graphic(dictionary[1])
 # print(create_dictionary('data.csv'))
