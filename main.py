@@ -270,14 +270,22 @@ def goals_graph(ranking):
 
 def group_graph(ranking, group):
     teams_in_group = []
-    teams_points = []
+    matches = [0, 1, 2, 3]
     for key in ranking:
         if ranking[key]['group'] == str(group):
-            print(ranking[key])
-            teams_in_group.append(key)
-            teams_points.append(ranking[key]['points'])
-    print(teams_in_group)
-    print(teams_points)
+            teams_in_group.append([key, [ranking[key]['points']]])
+        if len(teams_in_group) == 4:
+            break
+    for index, team in enumerate(teams_in_group):
+        print(teams_in_group[index][1][0])
+        plt.plot(teams_in_group[index][1][0],
+                 label=teams_in_group[index][0], marker='o')
+    plt.legend()
+    plt.xticks(matches)
+    plt.title('Group point results by match')
+    plt.xlabel('Match #')
+    plt.ylabel('Points')
+    plt.show()
 
 
 dictionary = create_dictionary('data.csv')
