@@ -181,7 +181,7 @@ def create_dictionary(archive):
 
             for line in lines[1:]:
                 new_row_values = line.strip().split(',')
-                if country_name not in new_row_values:
+                if country_name not in new_row_values or line_counter == 3:
                     continue
                 else:
                     line_counter += 1
@@ -217,9 +217,18 @@ def create_dictionary(archive):
                                         stats_processed['points'][line_counter - 1] + 0)
                     else:
                         if new_row_values[3] == country_name:
-                            if goals['home_goles'] > goals['away_goles']:
-                                stats_processed['points'][line_counter] += (
-                                    stats_processed['points'][line_counter - 1] + 3)
+                            try:
+                                if goals['home_goles'] > goals['away_goles']:
+                                    print(line_counter, country_name)
+                                    stats_processed['points'][line_counter] += (
+                                        stats_processed['points'][line_counter - 1] + 3)
+                            except IndexError:
+                                print("Error: Index out of range.")
+                                print("Buggy values:")
+                                print("line_counter:", line_counter)
+                                print('country:', country_name)
+                                print(
+                                    "stats_processed['points']:", stats_processed['points'])
                             if goals['home_goles'] == goals['away_goles']:
                                 stats_processed['points'][line_counter] += (
                                     stats_processed['points'][line_counter - 1] + 1)
@@ -227,13 +236,13 @@ def create_dictionary(archive):
                                 stats_processed['points'][line_counter] += (
                                     stats_processed['points'][line_counter - 1] + 0)
                         elif new_row_values[4] == country_name:
-                            if goals['home_goles'] > goals['away_goles']:
+                            if goals['away_goles'] > goals['home_goles']:
                                 stats_processed['points'][line_counter] += (
                                     stats_processed['points'][line_counter - 1] + 3)
-                            if goals['home_goles'] == goals['away_goles']:
+                            if goals['away_goles'] == goals['home_goles']:
                                 stats_processed['points'][line_counter] += (
                                     stats_processed['points'][line_counter - 1] + 1)
-                            if goals['home_goles'] < goals['away_goles']:
+                            if goals['away_goles'] < goals['home_goles']:
                                 stats_processed['points'][line_counter] += (
                                     stats_processed['points'][line_counter - 1] + 0)
 
@@ -241,6 +250,7 @@ def create_dictionary(archive):
             add_group('group_stats.csv', processed_countries, country_name)
         calculated_ranks = calculate_ranks(lines[61:], processed_countries)
         goal_ranking = create_goal_ranking(processed_countries)
+        print(processed_countries)
         return [calculated_ranks, goal_ranking, processed_countries]
 
 
@@ -270,7 +280,7 @@ def group_graph(ranking, group):
     print(teams_points)
 
 
-dictionary = create_dictionary('test_data.csv')
+dictionary = create_dictionary('data.csv')
 # print(dictionary[2])
 group_graph(dictionary[2], 1)
 # goals_graphic(dictionary[1])
