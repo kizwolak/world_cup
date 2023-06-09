@@ -1,3 +1,6 @@
+import matplotlib.pyplot as plt
+
+
 def goal_extractor(string):
     if string[0] == '(':
         home_penal = string[1]
@@ -68,7 +71,7 @@ def calculate_ranks(lines, processed_countries):
                 if goals['home_goles'] > goals['away_goles']:
                     processed_countries[playoff_teams[0]]['rank'] = 3
                     processed_countries[playoff_teams[1]]['rank'] = 4
-                elif goals[1] > goals[0]:
+                elif goals['away_goles'] > goals['home_goles']:
                     processed_countries[playoff_teams[0]]['rank'] = 4
                     processed_countries[playoff_teams[1]]['rank'] = 3
                 else:
@@ -90,7 +93,7 @@ def calculate_ranks(lines, processed_countries):
                     processed_countries[playoff_teams[0]]['rank'] = 4
                     processed_countries[playoff_teams[1]]['rank'] = 3
                 else:
-                    if away_penal > home_penal:
+                    if goals['away_penal'] > goals['home_penal']:
                         processed_countries[playoff_teams[0]
                                             ]['rank'] = 3
                         processed_countries[playoff_teams[1]
@@ -308,10 +311,24 @@ def create_dictionary(archive):
 
             processed_countries[country_name] = stats_processed
             add_group('group_stats.csv', processed_countries, country_name)
-        calculate_ranks(lines[61:], processed_countries)
-        print(create_goal_ranking(processed_countries))
-        return processed_countries
+        calculated_ranks = calculate_ranks(lines[61:], processed_countries)
+        goal_ranking = create_goal_ranking(processed_countries)
+        return [calculated_ranks, goal_ranking, processed_countries]
 
 
-create_dictionary('data.csv')
+def goals_graphic(ranking):
+    country_names, goals = zip(*ranking)
+
+    fig = plt.figure(figsize=(10, 5))
+    plt.bar(country_names, goals, color='blue', width=0.4)
+
+    plt.xlabel("Countries")
+    plt.ylabel("Goals scored")
+    plt.title(
+        "The amount of goals scored by each participant of the 2022 World Cup.")
+    plt.show()
+
+
+dictionary = create_dictionary('data.csv')
+goals_graphic(dictionary[1])
 # print(create_dictionary('data.csv'))
