@@ -319,13 +319,14 @@ def create_dictionary(archive):
 def goals_graphic(ranking):
     country_names, goals = zip(*ranking)
 
-    fig = plt.figure(figsize=(10, 5))
-    plt.bar(country_names, goals, color='blue', width=0.4)
+    fig = plt.figure(figsize=(15, 10))
+    plt.bar(country_names[::-1], goals[::-1], color='blue', width=0.4)
 
     plt.xlabel("Countries")
     plt.ylabel("Goals scored")
     plt.title(
         "The amount of goals scored by each participant of the 2022 World Cup.")
+    plt.xticks(rotation=90)
     plt.show()
 
 
