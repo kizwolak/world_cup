@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import csv
 
 
 def goal_extractor(string):
@@ -187,7 +188,6 @@ def create_dictionary(archive):
                     line_counter += 1
                     goals = goal_extractor(new_row_values[7])
                     if new_row_values[3] == country_name:
-                        print(new_row_values[3])
                         stats_processed['goals'] += goals['home_goles']
                     if new_row_values[4] == country_name:
                         stats_processed['goals'] += goals['away_goles']
@@ -268,7 +268,6 @@ def group_graph(ranking, group):
         if len(teams_in_group) == 4:
             break
     for index, team in enumerate(teams_in_group):
-        print(teams_in_group[index][1][0])
         plt.plot(teams_in_group[index][1][0],
                  label=teams_in_group[index][0], marker='o')
     plt.legend()
@@ -279,8 +278,18 @@ def group_graph(ranking, group):
     plt.show()
 
 
+def create_archive(dictionary):
+    with open('processed_data.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['teams', 'goals', 'group', 'score1',
+                        'score2', 'score3', 'rank'])
+        for key in dictionary:
+            print(dictionary[key]['group'])
+            writer.writerow([key, dictionary[key]['goals'], dictionary[key]['group'], dictionary[key]['points']
+                            [0], dictionary[key]['points'][1], dictionary[key]['points'][2], dictionary[key]['rank']])
+
+
 dictionary = create_dictionary('data.csv')
-# print(dictionary[2])
-group_graph(dictionary[2], 8)
+create_archive(dictionary[2])
+# group_graph(dictionary[2], 2)
 # goals_graphic(dictionary[1])
-# print(create_dictionary('data.csv'))
