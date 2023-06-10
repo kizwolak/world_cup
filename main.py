@@ -284,12 +284,45 @@ def create_archive(dictionary):
         writer.writerow(['teams', 'goals', 'group', 'score1',
                         'score2', 'score3', 'rank'])
         for key in dictionary:
-            print(dictionary[key]['group'])
             writer.writerow([key, dictionary[key]['goals'], dictionary[key]['group'], dictionary[key]['points']
                             [0], dictionary[key]['points'][1], dictionary[key]['points'][2], dictionary[key]['rank']])
 
 
+def graph_podium(dictionary):
+    top3 = {}
+    for key in dictionary:
+        if dictionary[key]['rank'] != 1 and dictionary[key]['rank'] != 2 and dictionary[key]['rank'] != 3:
+            continue
+        if dictionary[key]['rank'] == 1:
+            top3[key] = 3
+        if dictionary[key]['rank'] == 2:
+            top3[key] = 2
+        if dictionary[key]['rank'] == 3:
+            top3[key] = 1
+        if len(top3) == 3:
+            break
+    print(top3.keys())
+    for country in top3:
+        if top3[country] == 2:
+            barplot = plt.bar(
+                country, top3[country], width=1.0, color='royalblue')
+            plt.bar_label(barplot, labels=[country])
+    for country in top3:
+        if top3[country] == 3:
+            barplot = plt.bar(
+                country, top3[country], width=1.0, color='royalblue')
+            plt.bar_label(barplot, labels=[country])
+    for country in top3:
+        if top3[country] == 1:
+            barplot = plt.bar(
+                country, top3[country], width=1.0, color='royalblue')
+            plt.bar_label(barplot, labels=[country])
+    plt.axis('off')
+    plt.show()
+
+
 dictionary = create_dictionary('data.csv')
-create_archive(dictionary[2])
+graph_podium(dictionary[2])
+# create_archive(dictionary[2])
 # group_graph(dictionary[2], 2)
 # goals_graphic(dictionary[1])
