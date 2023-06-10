@@ -162,6 +162,19 @@ def create_goal_ranking(dictionary):
     return combined_list
 
 
+def create_group_ranking(dictionary, stage):
+    if stage == None:
+        stage: 3
+    country_list = []
+    points_list = []
+    for key in dictionary:
+        country_list.append(key)
+        points_list.append(dictionary[key]['points'][stage])
+    combined_list = sorted(zip(country_list, points_list))
+    combined_list.sort(key=sort_item, reverse=True)
+    return combined_list
+
+
 def create_dictionary(archive):
     with open(archive, 'r', encoding='utf-8') as data:
         lines = data.readlines()
@@ -322,7 +335,8 @@ def graph_podium(dictionary):
 
 
 dictionary = create_dictionary('data.csv')
-graph_podium(dictionary[2])
+# graph_podium(dictionary[2])
+print(create_group_ranking(dictionary[2], 3))
 # create_archive(dictionary[2])
 # group_graph(dictionary[2], 2)
 # goals_graphic(dictionary[1])
