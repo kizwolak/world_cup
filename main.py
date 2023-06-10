@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import csv
+import numpy as np
 
 
 def goal_extractor(string):
@@ -272,23 +273,27 @@ def goals_graph(ranking):
     plt.show()
 
 
-def group_graph(ranking, group):
-    teams_in_group = []
+def group_graph(ranking, groups=None):
+    if groups is None:
+        groups = [1, 2, 3, 4, 5, 6, 7, 8]
+        print(True)
     matches = [0, 1, 2, 3]
-    for key in ranking:
-        if ranking[key]['group'] == str(group):
-            teams_in_group.append([key, [ranking[key]['points']]])
-        if len(teams_in_group) == 4:
-            break
-    for index, team in enumerate(teams_in_group):
-        plt.plot(teams_in_group[index][1][0],
-                 label=teams_in_group[index][0], marker='o')
-    plt.legend()
-    plt.xticks(matches)
-    plt.title('Group point results by match')
-    plt.xlabel('Match #')
-    plt.ylabel('Points')
-    plt.show()
+    if isinstance(groups, np.ndarray) == False:
+        teams_in_group = []
+        for key in ranking:
+            if ranking[key]['group'] == str(groups):
+                teams_in_group.append([key, [ranking[key]['points']]])
+            if len(teams_in_group) == 4:
+                break
+        for index, team in enumerate(teams_in_group):
+            plt.plot(teams_in_group[index][1][0],
+                     label=teams_in_group[index][0], marker='o')
+        plt.legend()
+        plt.xticks(matches)
+        plt.title('Group point results by match')
+        plt.xlabel('Match #')
+        plt.ylabel('Points')
+        plt.show()
 
 
 def create_archive(dictionary):
@@ -336,7 +341,7 @@ def graph_podium(dictionary):
 
 dictionary = create_dictionary('data.csv')
 # graph_podium(dictionary[2])
-print(create_group_ranking(dictionary[2], 3))
+# print(create_group_ranking(dictionary[2], 3))
 # create_archive(dictionary[2])
-# group_graph(dictionary[2], 2)
+group_graph(dictionary[2], 2)
 # goals_graphic(dictionary[1])
