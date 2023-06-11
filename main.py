@@ -32,6 +32,8 @@ def calculate_ranks(lines, processed_countries):
     playoff_teams = []
     final_teams = []
     for line in lines[0:2]:
+        if len(playoff_teams) == 2 and len(final_teams) == 2:
+            break
         new_row_values = line.strip().split(',')
         first_country_name = new_row_values[3]
         second_country_name = new_row_values[4]
@@ -294,6 +296,17 @@ def group_graph(ranking, groups=None):
         plt.xlabel('Match #')
         plt.ylabel('Points')
         plt.show()
+    else:
+        axes = plt.subplots(nrows=2, ncols=4, figsize=(10, 8))
+        for group in groups:
+            
+        plt.legend()
+        plt.xticks(matches)
+        plt.title('Group point results by match')
+        plt.xlabel('Match #')
+        plt.ylabel('Points')
+        plt.show()
+            
 
 
 def create_archive(dictionary):
